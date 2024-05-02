@@ -1,9 +1,10 @@
-import React from "react";
-import Item from "./Item";
+"use client";
+import { IconPlus, IconX } from "@tabler/icons-react";
 import { Droppable } from "react-beautiful-dnd";
+import { ListItem } from "@/app/wholePage";
 import { styled } from "@stitches/react";
-import { ListItem } from "@/app/page";
-import { v4 } from "uuid";
+import Item from "./Item";
+import React from "react";
 
 const StyledColumn = styled("div", {
   minHeight: "180px",
@@ -29,14 +30,17 @@ const StyledList = styled("div", {
   marginTop: 8,
 });
 
+const handleCreateModal = () => {
+  (document?.getElementById("createModal") as HTMLFormElement)?.showModal();
+};
+
 const Column: React.FC<{
   col: {
     id: string;
     list: ListItem[];
   };
-  onAdd: (name: string) => void;
   onRemove: (columnId: string, id: string) => void;
-}> = ({ col, onRemove, onAdd }) => {
+}> = ({ col, onRemove }) => {
   return (
     <Droppable droppableId={col.id}>
       {(provided) => (
@@ -44,18 +48,17 @@ const Column: React.FC<{
           <h2>{col.id}</h2>
           <StyledList {...provided.droppableProps} ref={provided.innerRef}>
             {col.list.map(({ id, name }, index) => {
-              console.log("item:", name, id, index);
               return (
                 <Item key={name} text={name} index={index}>
                   <button className="flex" onClick={() => onRemove(col.id, id)}>
-                    remove
+                    <IconX color="red" />
                   </button>
                 </Item>
               );
             })}
             {col.id === "todo" && (
-              <button className="w-full p-4" onClick={() => onAdd(v4())}>
-                +
+              <button className="w-full p-3 my-4 flex justify-center" onClick={() => handleCreateModal()}>
+                <IconPlus color="#1d4ed8" />
               </button>
             )}
             {provided.placeholder}
