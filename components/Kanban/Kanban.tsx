@@ -1,10 +1,13 @@
 "use client";
 
+import { ColumnToolbar, ColumnToolbarTool } from "../ColumnToolbar";
 import { useCreateModalForm } from "@/hooks/useCreateModalForm";
 import { DragDropContext, DropResult } from "@hello-pangea/dnd";
-import { CreateModal } from "@/components/CreateModal";
+import { IconPlus, IconTrash } from "@tabler/icons-react";
 import { useKanbanHooks } from "./hooks/useKanbanHooks";
 import { T_ColumnStatus, T_KanbanState } from "@/types";
+import { CreateModal } from "@/components/CreateModal";
+import { TooltipWrapper } from "../TooltipWrapper";
 import { Column } from "@/components/Column";
 
 export default function Kanban() {
@@ -16,6 +19,7 @@ export default function Kanban() {
 		handleRemoveTask,
 		handleDraggedTask,
 		setCreateModalOpen,
+		handleRemoveAllTasksByStatus,
 		handleCreateModalSubmit
 	} = useKanbanHooks();
 	const columns = watch();
@@ -60,12 +64,23 @@ export default function Kanban() {
 		<DragDropContext onDragEnd={onDragEnd}>
 			<CreateModal state={createOpen} setState={setCreateModalOpen} onAdd={handleCreateModalSubmit} methods={createModalForm} />
 
-			<main className="flex min-h-screen flex-col items-center justify-between">
+			<main className="flex flex-col items-center">
+				<ColumnToolbar>
+					<ColumnToolbarTool>
+						<TooltipWrapper title="Create new task" onClick={() => setCreateModalOpen(true)}>
+							<IconPlus color="#4d4d4d" />
+						</TooltipWrapper>
+					</ColumnToolbarTool>
+
+					<ColumnToolbarTool>
+						<TooltipWrapper title="Delete all tasks marked done" onClick={() => handleRemoveAllTasksByStatus("done")}>
+							<IconTrash />
+						</TooltipWrapper>
+					</ColumnToolbarTool>
+				</ColumnToolbar>
+
 				<div className="grid grid-cols-3 w-full">
-					{!isLoading &&
-						Object.values(columns).map((col) => (
-							<Column col={col} key={col.id} onRemove={handleRemoveTask} onCreateModalOpen={() => setCreateModalOpen(true)} />
-						))}
+					{!isLoading && Object.values(columns).map((col) => <Column col={col} key={col.id} onRemove={handleRemoveTask} />)}
 				</div>
 			</main>
 		</DragDropContext>

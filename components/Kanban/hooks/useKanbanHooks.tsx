@@ -87,6 +87,27 @@ export function useKanbanHooks() {
 		queryClient.invalidateQueries();
 	};
 
+	const handleRemoveAllTasksByStatus = async (status: T_ColumnStatus) => {
+		const { error } = await supabase.from("tasks").delete().eq("status", status);
+
+		if (error) {
+			toast({
+				title: "Error",
+				description: error.message
+			});
+
+			throw new Error(error.message);
+		}
+
+		try {
+			await supabase.from("report").delete().neq("id", "removing_all");
+		} catch (err) {
+			console.log("Removing from `report` failed");
+		}
+
+		queryClient.invalidateQueries();
+	};
+
 	return {
 		tasksQuery,
 		createOpen,
@@ -94,6 +115,7 @@ export function useKanbanHooks() {
 		handleDraggedTask,
 		setCreateModalOpen,
 		handleCreateModalSubmit,
+		handleRemoveAllTasksByStatus,
 		tasksForm: form
 	};
 }

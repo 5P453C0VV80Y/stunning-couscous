@@ -15,15 +15,26 @@ const Item = ({ deadline, id, name, index, children, responsible }: T_ItemProps)
 		<Draggable draggableId={id.toString()} index={index}>
 			{(provided) => (
 				<li
-					className="border text-white rounded p-4 mt-2 flex justify-between items-center transition-colors duration-150 hover:bg-slate-900 ease-in group"
+					className="border bg-white text-black rounded py-4 px-5 mt-5 flex justify-between items-center transition-all duration-150 hover:bg-slate-50 hover:shadow-md ease-in group"
 					ref={provided.innerRef}
 					{...provided.draggableProps}
 					{...provided.dragHandleProps}
 				>
 					<div className="">
-						<div className="font-bold text-xl mb-2">{name}</div>
-						<div className="text-sm text-black bg-slate-300 py-1 px-2 rounded-sm">{format(deadline, "dd MMM yyy")}</div>
-						{currentResponsible && <div className="">{currentResponsible}</div>}
+						<div className="text-[17px] leading-snug mb-2 min-h-14">{name}</div>
+
+						<div className="flex gap-2">
+							<div className="text-xs text-black bg-gray-100 py-1 px-2 rounded-sm flex items-center">{format(deadline, "dd MMM yyy")}</div>
+
+							{currentResponsible && (
+								<div className="flex gap-2 items-center rounded-sm bg-gray-100 py-1 px-2">
+									<div className="rounded-full text-md font-bold bg-green-200 text-gray-700	 w-6 h-6 flex justify-center items-center">
+										{currentResponsible.at(0)}
+									</div>
+									<div className="text-sm leading-tight">{currentResponsible}</div>
+								</div>
+							)}
+						</div>
 					</div>
 
 					<div className="toolbar">{children}</div>

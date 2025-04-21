@@ -1,19 +1,11 @@
 "use client";
 import { T_ColumnStatus, T_KanbanColumn } from "@/types";
-import { IconPlus, IconX } from "@tabler/icons-react";
+import { IconX } from "@tabler/icons-react";
 import { Droppable } from "@hello-pangea/dnd";
-import Item from "./Item";
 import { cn } from "@/lib/utils";
+import Item from "./Item";
 
-export const Column = ({
-	col,
-	onRemove,
-	onCreateModalOpen
-}: {
-	col: T_KanbanColumn<T_ColumnStatus>;
-	onRemove: (id: string | number) => void;
-	onCreateModalOpen: () => void;
-}) => {
+export const Column = ({ col, onRemove }: { col: T_KanbanColumn<T_ColumnStatus>; onRemove: (id: string | number) => void }) => {
 	return (
 		<Droppable droppableId={col.id}>
 			{(provided) => (
@@ -46,11 +38,6 @@ export const Column = ({
 								</Item>
 							);
 						})}
-						{col.id === "todo" && (
-							<button className="w-full flex justify-center absolute bottom-4 left-0 right-0" onClick={onCreateModalOpen}>
-								<IconPlus color="#1d4ed8" />
-							</button>
-						)}
 					</ul>
 				</div>
 			)}
