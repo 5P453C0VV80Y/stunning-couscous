@@ -3,6 +3,7 @@ import { T_ColumnStatus, T_KanbanColumn } from "@/types";
 import { IconPlus, IconX } from "@tabler/icons-react";
 import { Droppable } from "@hello-pangea/dnd";
 import Item from "./Item";
+import { cn } from "@/lib/utils";
 
 export const Column = ({
 	col,
@@ -16,14 +17,26 @@ export const Column = ({
 	return (
 		<Droppable droppableId={col.id}>
 			{(provided) => (
-				<div className="w-full px-4 py-6 flex flex-col mt-2" aria-label="Column">
-					<h2 className="m-0 py-0 px-4">{col.id}</h2>
-
+				<div className="w-full px-4 py-6 flex flex-col" aria-label="Column">
 					<ul
-						className="border rounded-lg relative p-4 min-h-96 w-full min-w-full flex flex-col flex-grow mt-2 text-black pb-14"
+						className="border rounded-lg relative bg-white p-4 px-6 min-h-[648px] w-full min-w-full flex flex-col flex-grow text-black pb-14"
 						{...provided.droppableProps}
 						ref={provided.innerRef}
 					>
+						<li className="mb-2">
+							<h2 className="my-2 font-light text-xl capitalize align-middle">
+								{col.id === "todo" ? "To Do" : col.id}
+								<span className="text-gray-300">{" | "}</span>
+								<span className="text-lg">{col.list.length}</span>
+							</h2>
+							<span
+								className={cn("h-1 w-full block opacity-75 rounded-sm", {
+									"bg-todo": col.id === "todo",
+									"bg-doing": col.id === "doing",
+									"bg-done": col.id === "done"
+								})}
+							/>
+						</li>
 						{col.list.map((item, index) => {
 							return (
 								<Item key={item.id} index={index} {...item}>
