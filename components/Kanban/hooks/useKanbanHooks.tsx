@@ -100,7 +100,7 @@ export function useKanbanHooks() {
 		}
 
 		try {
-			await supabase.from("report").delete().neq("id", "removing_all");
+			await supabase.from("report").delete().neq("id", -1);
 		} catch (err) {
 			console.log("Removing from `report` failed");
 		}
