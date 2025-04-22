@@ -99,13 +99,20 @@ export function useKanbanHooks() {
 			throw new Error(error.message);
 		}
 
-		try {
-			await supabase.from("report").delete().neq("id", -1);
-		} catch (err) {
-			console.log("Removing from `report` failed");
-		}
-
 		queryClient.invalidateQueries();
+	};
+
+	const handleRemoveAllReports = async () => {
+		const { error } = await supabase.from("report").delete().neq("id", -1);
+
+		if (error) {
+			toast({
+				title: "Error",
+				description: error.message
+			});
+
+			throw new Error(error.message);
+		}
 	};
 
 	return {
@@ -114,6 +121,7 @@ export function useKanbanHooks() {
 		handleRemoveTask,
 		handleDraggedTask,
 		setCreateModalOpen,
+		handleRemoveAllReports,
 		handleCreateModalSubmit,
 		handleRemoveAllTasksByStatus,
 		tasksForm: form

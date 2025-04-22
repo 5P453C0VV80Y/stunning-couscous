@@ -3,7 +3,7 @@
 import { ColumnToolbar, ColumnToolbarTool } from "../ColumnToolbar";
 import { useCreateModalForm } from "@/hooks/useCreateModalForm";
 import { DragDropContext, DropResult } from "@hello-pangea/dnd";
-import { IconPlus, IconTrash } from "@tabler/icons-react";
+import { IconColumnRemove, IconFileOff, IconPlus, IconReportOff, IconRowRemove, IconTableOff, IconTrash } from "@tabler/icons-react";
 import { useKanbanHooks } from "./hooks/useKanbanHooks";
 import { T_ColumnStatus, T_KanbanState } from "@/types";
 import { CreateModal } from "@/components/CreateModal";
@@ -19,8 +19,9 @@ export default function Kanban() {
 		handleRemoveTask,
 		handleDraggedTask,
 		setCreateModalOpen,
-		handleRemoveAllTasksByStatus,
-		handleCreateModalSubmit
+		handleRemoveAllReports,
+		handleCreateModalSubmit,
+		handleRemoveAllTasksByStatus
 	} = useKanbanHooks();
 	const columns = watch();
 
@@ -68,7 +69,13 @@ export default function Kanban() {
 				<ColumnToolbar>
 					<ColumnToolbarTool>
 						<TooltipWrapper title="Create new task" onClick={() => setCreateModalOpen(true)}>
-							<IconPlus color="#4d4d4d" />
+							<IconPlus />
+						</TooltipWrapper>
+					</ColumnToolbarTool>
+
+					<ColumnToolbarTool>
+						<TooltipWrapper title="Delete all reports" onClick={() => handleRemoveAllReports()}>
+							<IconTableOff />
 						</TooltipWrapper>
 					</ColumnToolbarTool>
 
